@@ -154,7 +154,6 @@ class Memory(MemoryBase):
             ],
             response_format={"type": "json_object"},
         )
-
         try:
             response = remove_code_blocks(response)
             new_retrieved_facts = json.loads(response)["facts"]
@@ -473,7 +472,6 @@ class Memory(MemoryBase):
             }
             for mem in memories
         ]
-
         return original_memories
 
     def update(self, memory_id, data):

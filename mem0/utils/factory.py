@@ -61,6 +61,7 @@ class EmbedderFactory:
 
 class VectorStoreFactory:
     provider_to_class = {
+        "weaviate": "mem0.vector_stores.weaviate.Weaviate",
         "qdrant": "mem0.vector_stores.qdrant.Qdrant",
         "chroma": "mem0.vector_stores.chroma.ChromaDB",
         "pgvector": "mem0.vector_stores.pgvector.PGVector",
