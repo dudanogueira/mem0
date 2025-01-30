@@ -19,6 +19,18 @@ class WeaviateConfig(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
+    def validate_client_parameter(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+        client, weaviate_cloud_url, weaviate_cloud_api_key = (
+            values.get("client"),
+            values.get("weaviate_cloud_url"),
+            values.get("weaviate_cloud_api_key"),
+        )
+        if not client and not (weaviate_cloud_url and weaviate_cloud_api_key):
+            raise ValueError("Either a 'client' or 'weaviate_cloud_url' and 'weaviate_cloud_api_key' must be provided.")
+        return values
+
+    @model_validator(mode="before")
+    @classmethod
     def validate_extra_fields(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         allowed_fields = set(cls.model_fields.keys())
         input_fields = set(values.keys())
@@ -27,10 +39,13 @@ class WeaviateConfig(BaseModel):
             raise ValueError(
                 f"Extra fields not allowed: {', '.join(extra_fields)}. Please input only the following fields: {', '.join(allowed_fields)}"
             )
+        
         return values
 
     # TODO:
     # validate: it must have client or weaviate_cloud_url and weaviate_cloud_api_key
+    # validate: it must have client or tenant_name
+
 
     model_config = {
         "arbitrary_types_allowed": True,
